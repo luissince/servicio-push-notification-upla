@@ -2,6 +2,8 @@ package main
 
 import (
 	// "fmt"
+	"fmt"
+	"log"
 	"net/http"
 	"os"
 	"servicio-pushnotificacion/src/controller"
@@ -18,7 +20,18 @@ func main() {
 
 	var go_port string = os.Getenv("GO_PORT")
 
+	var ruta_log string = os.Getenv("RUTA_LOG")
+
+	// Crear archivo log
+	f, err := os.Create(ruta_log)
+	if err != nil {
+		fmt.Println(err)
+	}
+	defer f.Close()
+	log.SetOutput(f)
+
 	router := gin.Default()
+	router.Use(gin.Logger())
 
 	// Middleware para CORS
 	config := cors.DefaultConfig()
@@ -27,6 +40,7 @@ func main() {
 
 	// Rutas
 	router.GET("/", func(c *gin.Context) {
+		log.Println("Endpoint ping")
 		c.JSON(http.StatusOK, gin.H{
 			"message": "API GO LANG",
 		})

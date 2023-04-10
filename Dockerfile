@@ -17,6 +17,8 @@ RUN go mod download
 # Copy the code into the container
 COPY . .
 
+RUN mkdir /etc/push
+
 # Build the application
 RUN go build -o main .
 

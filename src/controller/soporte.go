@@ -3,6 +3,7 @@ package controller
 import (
 	"context"
 	"fmt"
+	"log"
 	"net/http"
 	"servicio-pushnotificacion/src/helper"
 	"servicio-pushnotificacion/src/service"
@@ -19,6 +20,7 @@ func EnviarNotificacion(c *gin.Context) {
 	// Obtener el idConsulta de la URL
 	idConsulta := c.Param("idConsulta")
 	if idConsulta == "" {
+		log.Println("No se pudo procesar el parametro de la URL.")
 		c.IndentedJSON(http.StatusBadRequest, gin.H{"message": "No se pudo procesar el parametro de la URL."})
 		return
 	}
@@ -26,12 +28,14 @@ func EnviarNotificacion(c *gin.Context) {
 	// Obtener el token para notificar al usuario
 	consulta, result := service.ObtenerTokenEstudiante(idConsulta)
 	if result != "" && result != "ok" {
+		log.Println(result)
 		c.IndentedJSON(http.StatusInternalServerError, gin.H{"message": result})
 		return
 	}
 
 	// Validar si el alumno tiene un token
 	if consulta.TmUsuario.TokenApp == "" {
+		log.Println("El alumno no tiene un token, comuníquese con el área de informática.")
 		c.IndentedJSON(http.StatusBadRequest, gin.H{"message": "El alumno no tiene un token, comuníquese con el área de informática."})
 		return
 	}
@@ -42,14 +46,16 @@ func EnviarNotificacion(c *gin.Context) {
 
 	app, err := firebase.NewApp(ctx, nil, opt)
 	if err != nil {
-		c.IndentedJSON(http.StatusInternalServerError, gin.H{"message": "Se genero un problema al envíar la notificación"})
+		log.Println(err)
+		c.IndentedJSON(http.StatusInternalServerError, gin.H{"message": "Se genero un problema al carga el archivo de configuración."})
 		return
 	}
 
 	// Crear un cliente de FCM
 	client, err := app.Messaging(ctx)
 	if err != nil {
-		c.IndentedJSON(http.StatusInternalServerError, gin.H{"message": "Se genero un problema al envíar la notificación"})
+		log.Println(err)
+		c.IndentedJSON(http.StatusInternalServerError, gin.H{"message": "Se genero un problema al crear al cliente de mensaje FCM."})
 		return
 	}
 
@@ -72,11 +78,13 @@ func EnviarNotificacion(c *gin.Context) {
 	// Envía el mensaje de notificación push
 	response, err := client.Send(ctx, message)
 	if err != nil {
+		log.Println(err)
 		c.IndentedJSON(http.StatusInternalServerError, gin.H{"message": "Se genero un problema al envíar la notificación"})
 		return
 	}
 
 	fmt.Println(response)
 
+	log.Println("Envió correctamente la notificación.")
 	c.IndentedJSON(http.StatusOK, "Envió correctamente la notificación.")
 }
