@@ -9,6 +9,11 @@ import (
 )
 
 func main() {
+	time.LoadLocation("America/Lima")
+	godotenv.Load();
+
+	var go_port string = os.Getenv("GO_PORT");
+
 	router := gin.Default()
 
 	// Middleware para CORS
@@ -22,5 +27,5 @@ func main() {
 	// router.PUT("/user", service.UpdateUser)
 	// router.DELETE("/user", service.DeleteUsuario)
 
-	router.Run("localhost:8080")
+	router.Run(go_port)
 }
