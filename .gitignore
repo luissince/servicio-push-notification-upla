@@ -16,4 +16,4 @@
 
 .env
 
-src/helper/keys/*
+src/helper/keys/*.json
