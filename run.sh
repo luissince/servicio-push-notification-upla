@@ -1,7 +1,7 @@
-docker stop servicio-bbva && docker rm servicio-bbva
+docker stop servicio-push && docker rm servicio-push
 
-docker image rm servicio-bbva
+docker image rm servicio-push
 
-docker build -t servicio-bbva .
+docker build -t servicio-push .
 
-docker run -d --name servicio-bbva --net=upla -p 8890:80 servicio-bbva
+docker run -d --name servicio-push --net=upla -p 8890:80 servicio-push
