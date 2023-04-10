@@ -2,6 +2,7 @@ package main
 
 import (
 	// "fmt"
+	"net/http"
 	"os"
 	"servicio-pushnotificacion/src/controller"
 	"time"
@@ -23,6 +24,13 @@ func main() {
 	config := cors.DefaultConfig()
 	config.AllowOrigins = []string{"*"}
 	router.Use(cors.New(config))
+
+	// Rutas
+	router.GET("/", func(c *gin.Context) {
+		c.JSON(http.StatusOK, gin.H{
+			"message": "API GO LANG",
+		})
+	})
 
 	router.GET("/consulta/:idConsulta", controller.EnviarNotificacion)
 	// router.GET("/user/:idUsuario", service.GetUserById)
