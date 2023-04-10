@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 	"servicio-pushnotificacion/src/helper"
 	"servicio-pushnotificacion/src/service"
 
@@ -40,9 +41,12 @@ func EnviarNotificacion(c *gin.Context) {
 		return
 	}
 
+	var ruta_firebase string = os.Getenv("RUTA_FIREBASE")
+	fmt.Println(ruta_firebase)
+
 	// Configurar Firebase
 	ctx := context.Background()
-	opt := option.WithCredentialsFile("src/helper/keys/app-push-notification-f632c-firebase-adminsdk-d271n-f5a3ed91dc.json")
+	opt := option.WithCredentialsFile(ruta_firebase)
 
 	app, err := firebase.NewApp(ctx, nil, opt)
 	if err != nil {
