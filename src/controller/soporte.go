@@ -75,7 +75,7 @@ func EnviarNotificacion(c *gin.Context) {
 			Body:  consulta.Asunto,
 		},
 		Data: data,
-		// Token: "fJUEIvR0njdVJgshHOSZ_S:APA91bEu4l2Aip7iKs-cCu0rW5bqiaveks2RlUxWkfZTWPsZma8ZW4qss73mNxsB_g9dtQh5L35MSqoVLAwhl9lXUJziRAbpRfgSssucuYgq8ywmeGx1KQ5KjfEfqvtSyN2ohlvK-ep_",
+		//Token: "fJUEIvR0njdVJgshHOSZ_S:APA91bHruGtQgzzPh9uNA1pUonpkh8crqtwCqpkvRR2_YEKHtVwS6u8pmuPWK3H7EfmH8NPyilDlj82E_92vzEkj0F1heW4q7ayD9ovu6TQe18xABe2ahCWMHKxAeDn835KArluaI2MZ",
 		Token: consulta.TmUsuario.TokenApp,
 	}
 
@@ -89,6 +89,5 @@ func EnviarNotificacion(c *gin.Context) {
 
 	fmt.Println(response)
 
-	log.Println("Envió correctamente la notificación.")
 	c.IndentedJSON(http.StatusOK, "Envió correctamente la notificación.")
 }
