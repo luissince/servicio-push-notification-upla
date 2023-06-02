@@ -16,4 +16,6 @@
 
 .env
 
+*.txt
+
 src/helper/keys/*.json

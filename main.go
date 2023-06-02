@@ -9,19 +9,20 @@ import (
 	"servicio-pushnotificacion/src/controller"
 	"time"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 )
 
-func corsMiddleware() gin.HandlerFunc {
-	return func(c *gin.Context) {
-		c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
-		c.Writer.Header().Set("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept")
-		c.Writer.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE")
-		c.Writer.Header().Set("Content-Type", "application/json; charset=UTF-8")
-		c.Next()
-	}
-}
+// func corsMiddleware() gin.HandlerFunc {
+// 	return func(c *gin.Context) {
+// 		c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
+// 		c.Writer.Header().Set("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept")
+// 		c.Writer.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE")
+// 		c.Writer.Header().Set("Content-Type", "application/json; charset=UTF-8")
+// 		c.Next()
+// 	}
+// }
 
 func main() {
 	time.LoadLocation("America/Lima")
@@ -43,8 +44,8 @@ func main() {
 	router.Use(gin.Logger())
 
 	// Middleware para CORS
-	router.Use(corsMiddleware())
-	// config := cors.DefaultConfig()
+	//router.Use(corsMiddleware())
+	router.Use(cors.Default())
 	// config.AllowOrigins = []string{"*"}
 	// router.Use(cors.New(config))
 
@@ -56,7 +57,7 @@ func main() {
 		})
 	})
 
-	router.GET("/consulta/:idConsulta", controller.EnviarNotificacion)
+	router.GET("/notificar/:idConsulta", controller.EnviarNotificacion)
 	// router.GET("/user/:idUsuario", service.GetUserById)
 	// router.POST("/user", service.InsertUser)
 	// router.PUT("/user", service.UpdateUser)
