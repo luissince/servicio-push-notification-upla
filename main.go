@@ -58,10 +58,6 @@ func main() {
 	})
 
 	router.GET("/notificar/:idConsulta", controller.EnviarNotificacion)
-	// router.GET("/user/:idUsuario", service.GetUserById)
-	// router.POST("/user", service.InsertUser)
-	// router.PUT("/user", service.UpdateUser)
-	// router.DELETE("/user", service.DeleteUsuario)
 
 	router.Run(go_port)
 }

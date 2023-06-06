@@ -41,6 +41,8 @@ func EnviarNotificacion(c *gin.Context) {
 		return
 	}
 
+	fmt.Println(consulta.TmUsuario.TokenApp)
+
 	var ruta_firebase string = os.Getenv("RUTA_FIREBASE")
 	fmt.Println(ruta_firebase)
 
@@ -82,12 +84,28 @@ func EnviarNotificacion(c *gin.Context) {
 	// Envía el mensaje de notificación push
 	response, err := client.Send(ctx, message)
 	if err != nil {
+		if messaging.IsRegistrationTokenNotRegistered(err) {
+			c.IndentedJSON(http.StatusInternalServerError, gin.H{"message": "Token de registro no válido o no registrado."})
+			return
+		}
+
 		log.Println(err)
-		c.IndentedJSON(http.StatusInternalServerError, gin.H{"message": "Se genero un problema al envíar la notificación"})
+		c.IndentedJSON(http.StatusInternalServerError, gin.H{"message": "Error al enviar la notificación."})
 		return
 	}
 
 	fmt.Println(response)
 
 	c.IndentedJSON(http.StatusOK, "Envió correctamente la notificación.")
+}
+
+func ValidarNotificacion(c *gin.Context) {
+	idConsulta := c.Param("idConsulta")
+	if idConsulta == "" {
+		log.Println("No se pudo procesar el parametro de la URL.")
+		c.IndentedJSON(http.StatusBadRequest, gin.H{"message": "No se pudo procesar el parametro de la URL."})
+		return
+	}
+
+	c.IndentedJSON(http.StatusOK, "Envió correctamente la notificación del id:"+idConsulta)
 }
