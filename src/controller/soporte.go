@@ -41,10 +41,7 @@ func EnviarNotificacion(c *gin.Context) {
 		return
 	}
 
-	fmt.Println(consulta.TmUsuario.TokenApp)
-
 	var ruta_firebase string = os.Getenv("RUTA_FIREBASE")
-	fmt.Println(ruta_firebase)
 
 	// Configurar Firebase
 	ctx := context.Background()
@@ -97,15 +94,4 @@ func EnviarNotificacion(c *gin.Context) {
 	fmt.Println(response)
 
 	c.IndentedJSON(http.StatusOK, "Envió correctamente la notificación.")
-}
-
-func ValidarNotificacion(c *gin.Context) {
-	idConsulta := c.Param("idConsulta")
-	if idConsulta == "" {
-		log.Println("No se pudo procesar el parametro de la URL.")
-		c.IndentedJSON(http.StatusBadRequest, gin.H{"message": "No se pudo procesar el parametro de la URL."})
-		return
-	}
-
-	c.IndentedJSON(http.StatusOK, "Envió correctamente la notificación del id:"+idConsulta)
 }
