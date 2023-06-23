@@ -46,10 +46,10 @@ Siga los pasos para iniciar el desarrollo:
         git config --global user.email johndoe@example.com
 
         // crea una carpera
-        mkdir servicio-app-movil-upla
+        mkdir servicio-push-notification-upla
 
         // moverse a la carpera
-        cd servicio-app-movil-upla
+        cd servicio-push-notification-upla
         
         // comando que inicia git
         git init
